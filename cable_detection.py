@@ -8,13 +8,13 @@ import time
 print("Load MODELS/.........")
 DNet=load_model("damage_detection.model")
 cls=["damage","original"]
-vs = cv2.VideoCapture(0)
+vs = VideoStream(src=0).start()
 width=(224,224)
 # loop over the frames from the video stream
-time.sleep(0.1)
+time.sleep(1.0)
 
-while (vs.isOpened()):
-    ret, frame = vs.read()
+while True:
+    frame = vs.read()
     if frame is None:
         break
     frame = cv2.resize(frame, width)
@@ -29,7 +29,7 @@ while (vs.isOpened()):
     text = label if label == "Non-damaged" else "WARNING! damaged!"
     color = (0, 255, 0) if label == "damage" else (0, 0, 255)
     #label = "{}: {:.2f}%".format(label, max(damage, original) * 100)
-    cv2.putText(frame,label,(30,50),cv2.FONT_HERSHEY_SIMPLEX,1.5,(0,255,0),5)
+    cv2.putText(frame,label,(30,50),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),2)
 
     cv2.imshow("Frame",frame)
     key=cv2.waitKey(1) & 0xFF
